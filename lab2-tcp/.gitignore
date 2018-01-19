@@ -1,0 +1,5 @@
+*.dSYM
+server
+client
+outFile.txt
+.idea/
