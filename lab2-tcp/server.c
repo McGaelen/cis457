@@ -10,6 +10,7 @@ int main(int argc, char **argv) {
     FILE *f;
     long filesize;
     char fileContents[5000];
+    char payload[5000];
 
     printf("Which port number? ");
     fgets(portNumber, 10, stdin);
@@ -29,6 +30,7 @@ int main(int argc, char **argv) {
         int clientsocket = accept(sockfd, (struct sockaddr *) &clientaddr, &len);
         filename[0] = '\0';
         fileContents[0] = '\0';
+        payload[0] = '\0';
 
         recv(clientsocket, filename, 5000, 0);
 
@@ -39,7 +41,8 @@ int main(int argc, char **argv) {
             filesize = ftell(f);
             rewind(f);
             fread(fileContents, filesize, 1, f);
-            send(clientsocket, fileContents, strlen(fileContents) + 1, 0);
+            strcat(payload, fileContents);
+            send(clientsocket, payload, strlen(payload) + 1, 0);
             printf("Found file %s.\n", filename);
         } else {
             perror("File open error");
